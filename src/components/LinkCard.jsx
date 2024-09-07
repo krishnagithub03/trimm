@@ -6,7 +6,8 @@ import { Copy, Delete, Download, Trash } from "lucide-react";
 import useFetch from "@/hooks/useFetch";
 import { deleteUrls } from "@/db/apiUrls";
 import { BarLoader } from "react-spinners";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const LinkCard = ({ url, fetchUrls }) => {
   const downloadImg = () => {
     const imgUrl = user?.qr;
@@ -50,11 +51,13 @@ const LinkCard = ({ url, fetchUrls }) => {
       </Link>
       <div className="flex gap-2">
         <Button
-          onClick={() =>
-            navigator.clipboard.writeText(`https://trimm.me/${url?.short_id}`)
-          }
+          onClick={() => {
+            navigator.clipboard.writeText(`https://trimm.me/${url?.short_url}`);
+            toast.success("Link copied to clipboard");
+          }}
         >
           <Copy />
+          <ToastContainer theme="dark" type="success" />
         </Button>
         <Button onClick={downloadImg}>
           <Download />

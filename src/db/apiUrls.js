@@ -64,3 +64,20 @@ export async function createUrls(
 
   return data;
 }
+
+export async function getLongUrl(id) {
+  const { data, error } = await supabase
+    .from("urls")
+    .select("id,original_url")
+    .or(`short_url.eq.${id},custom_url.eq.${id}`)
+    .single();
+
+  console.log("data : ", data);
+
+  if (error) {
+    console.log(error.message);
+    throw new Error("Error getting long link");
+  }
+
+  return data;
+}
