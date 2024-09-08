@@ -9,11 +9,24 @@ import { BarLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const LinkCard = ({ url, fetchUrls }) => {
-  const downloadImg = () => {
-    const imgUrl = user?.qr;
-    const fileName = user?.title;
+  const downloadImg = async () => {
+    const imgUrl = url?.qr;
+    const fileName = url?.title;
+    // const anchor = document.createElement("a");
+    // anchor.href = imgUrl;
+    // anchor.download = fileName;
+
+    // document.body.appendChild(anchor);
+    // anchor.click();
+    // document.body.removeChild(anchor);
+
+    const response = await fetch(imgUrl);
+    const blob = await response.blob();
+
     const anchor = document.createElement("a");
-    anchor.href = imgUrl;
+    const objectUrl = URL.createObjectURL(blob);
+
+    anchor.href = objectUrl;
     anchor.download = fileName;
 
     document.body.appendChild(anchor);
