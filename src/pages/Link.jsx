@@ -76,7 +76,7 @@ const Link = () => {
             https://trimm.me/{link}
           </a>
           <a
-            href={`https://trimm.me/${url?.original_url}`}
+            href={url?.original_url}
             target="_blank"
             className=" flex items-center gap-1  hover:underline cursor-pointer"
           >
