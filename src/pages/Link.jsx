@@ -15,18 +15,30 @@ import Location from "@/components/Location";
 import DeviceStats from "@/components/DeviceStats";
 
 const Link = () => {
-  const downloadImg = () => {
+  const downloadImg = async () => {
     const imgUrl = url?.qr;
     const fileName = url?.title;
+    // const anchor = document.createElement("a");
+    // anchor.href = imgUrl;
+    // anchor.download = fileName;
+
+    // document.body.appendChild(anchor);
+    // anchor.click();
+    // document.body.removeChild(anchor);
+
+    const response = await fetch(imgUrl);
+    const blob = await response.blob();
+
     const anchor = document.createElement("a");
-    anchor.href = imgUrl;
+    const objectUrl = URL.createObjectURL(blob);
+
+    anchor.href = objectUrl;
     anchor.download = fileName;
 
     document.body.appendChild(anchor);
     anchor.click();
     document.body.removeChild(anchor);
   };
-
   const { user } = UrlState();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -57,6 +69,9 @@ const Link = () => {
   if (url) {
     link = url?.custom_url ? url?.custom_url : url?.short_url;
   }
+  const handleRedirect = () => {
+    navigate(`/${link}`);
+  };
 
   return (
     <>
@@ -68,13 +83,19 @@ const Link = () => {
           <span className="text-6xl font-extrabold hover:underline cursor-pointer ">
             {url?.title}
           </span>
-          <a
+          {/* <a
             href={`https://trimm.me/${link}`}
             target="_blank"
             className="text-3xl sm:text-4xl text-blue-400 font-bold hover:underline cursor-pointer"
           >
             https://trimm.me/{link}
-          </a>
+          </a> */}
+          <span
+            className="text-3xl sm:text-4xl text-blue-400 font-bold hover:underline cursor-pointer"
+            onClick={handleRedirect}
+          >
+            https://trimm.me/{link}
+          </span>
           <a
             href={url?.original_url}
             target="_blank"
